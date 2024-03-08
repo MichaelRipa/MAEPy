@@ -1,11 +1,53 @@
-# MAEPy
-Machine Learning deduplication pipeline 
+# MAEPy: Machine Learning Deduplication Pipeline
 
-This is an experimental deduplication model/pipeline that I developed during my 4-month Co-op placement with the Public Service Commission of Canada (PSC) during the summer of 2022.
+MAEPy is an experimental deduplication pipeline developed during a 4-month Co-op placement with the Public Service Commission of Canada (PSC) in the summer of 2022. The pipeline is designed to remove duplicate accounts from an internal dataset, providing a more robust and adaptable solution compared to previous models built using handcrafted rules.
 
-The context and motivation behind the project were the need to remove duplicate accounts from an internal dataset, in which the previous model was built specifically using handcrafted rules. It seemed reasonable to try and create a more robust and adaptable model using Machine Learning both to improve upon the previous solution and to encourage further exploration of Machine Learning techniques for future projects. 
+# Context and Motivation
+The motivation behind this project was to explore Machine Learning techniques for deduplication tasks, especially in the context of messy datasets. The pipeline employs a novel approach of embedding structured database records into a vector space where similar records have smaller Euclidean distances. It further optimizes this vector space by skewing the embeddings with weights learned from a supervised classifier trained on similar features.
 
-The dataset in which the model was developed on was very messy, and so a lot of experimentation was needed to optimize the final product. The design of the pipeline is very experimental and involves creating vector representations that embed the structured database records into a vectorspace where similar records have a smaller Euclidean distance. A trick used to optimize the vector space was to skew the embeddings with weights learned from a supervised classifier trained to detect duplicate accounts from a similar set of features used to create the vector representations. 
+# Features
 
-Note that in my eyes, there are a lot of improvements that could be made here, both in the design of the algorithm itself and the codebase. Although it is currently being used by developers at the PSC, I still feel that the project is unfinished and that a lot of work would need to be done to turn this pipeline into something that could be "released into the wild" and used in production. I ran out of time at the end, leaving sections like "preprocessing.py" unfinished with hardcoded logic and missing features.
+- **Vector Space Embedding:** Structured records are transformed into vector representations, making it easier to identify duplicates by measuring Euclidean distances.
+- **Weighted Embeddings:** The embeddings are skewed with weights derived from a supervised classifier, enhancing the model's ability to recognize duplicates.
+- **Flexible Preprocessing:** A series of preprocessing steps are included to clean and prepare data for the deduplication process.
+- **Modular Design:** The pipeline comprises several standalone scripts (e.g., similarity measurement, clustering, and classification), each addressing specific aspects of the deduplication task.
+
+# Datasets
+The pipeline is designed to work with general datasets, but it requires the following:
+
+Main Dataset: The primary dataset that you want to deduplicate. The dataset should be in a format compatible with pandas DataFrames.
+Duplicates Dataset: A separate dataset used to train the classifier for identifying duplicates. This dataset should have the same structure as the main dataset.
+
+# Column Specifications
+Columns for Comparison: Specify the columns used for comparison in the default_cols variable in global_variables.py.
+Match Column: Define the column used to find 'gold standard pairs' within the duplicates dataset in the match_col variable.
+Unique Identifier: Ensure that a unique identifier column exists in your dataset, specified by the unique_identifier variable.
+
+# Installation
+
+Clone the repository:
+
+`git clone https://github.com/yourusername/MAEPy.git`
+
+Navigate to the project directory:
+
+`cd MAEPy`
+
+Create and activate a virtual environment:
+
+`python -m venv venv
+source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+pip install -r requirements.txt
+`
+# Usage
+
+To use the deduplication pipeline, follow these steps:
+
+1. **Preprocess the Datasets:** Ensure that your main and duplicates datasets are preprocessed and formatted correctly.
+2. **Configure the Pipeline:** Update the global_variables.py file with the appropriate column specifications and paths to your datasets.
+3. **Run the Pipeline:** Execute the main script (maepy.py) to start the dedupe.
+
+
+
+
 
